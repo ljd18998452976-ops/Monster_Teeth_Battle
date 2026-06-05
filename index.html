@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Monster Teeth Battle｜选人进入PK全屏版</title>
+<style>
+:root{
+  --bg:#eef2f7;--card:#fff;--ink:#213047;--muted:#6d7b8d;--line:#cbd6e3;
+  --blue:#2458e6;--purple:#9827c9;--orange:#ff8a3d;--yellow:#ffc85c;
+  --red:#ef5350;--green:#42b66b;--shadow:0 5px 0 rgba(139,154,174,.45);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;font-family:Arial,"Microsoft YaHei",sans-serif;color:var(--ink);
+  background:linear-gradient(180deg,#f5f7fb,#e9eef5);
+}
+button,input,select{font:inherit}
+button{border:0;cursor:pointer;transition:.14s transform,.14s filter}
+button:hover{filter:brightness(1.03);transform:translateY(-1px)}
+button:active{transform:translateY(1px)}
+.app{max-width:1500px;margin:0 auto;padding:18px}
+.header{
+  display:flex;justify-content:space-between;align-items:center;gap:12px;
+  background:#fff;border:2px solid var(--line);border-radius:22px;
+  padding:14px 18px;margin-bottom:14px;box-shadow:0 6px 18px rgba(33,48,71,.08)
+}
+.title{display:flex;align-items:center;gap:12px}
+.logo{
+  width:56px;height:56px;border-radius:18px;display:grid;place-items:center;
+  background:linear-gradient(135deg,var(--orange),var(--yellow));font-size:34px
+}
+h1{font-size:25px;margin:0}.sub{font-size:13px;color:var(--muted);margin-top:4px}
+.topBtns{display:flex;gap:9px;flex-wrap:wrap;justify-content:flex-end}
+.btn{
+  border-radius:16px;padding:11px 16px;font-weight:900;
+  background:#fff;border:2px solid var(--line);color:var(--ink);box-shadow:0 4px 0 rgba(139,154,174,.35)
+}
+.btn.main{background:linear-gradient(135deg,var(--blue),var(--purple));color:#fff;border-color:#1c4ad0}
+.btn.red{background:#fff0f0;color:#c64040;border-color:#ffcaca}
+.btn.green{background:#effff3;color:#21733d;border-color:#ccefd5}
+.btn.blue{background:#edf5ff;color:#1e63c7;border-color:#c9def8}
+.selectPanel{
+  background:#eef2f7;border:2px solid var(--line);border-radius:24px;
+  padding:16px;margin-bottom:14px
+}
+.selectedLine{
+  font-size:21px;font-weight:900;color:#1d52e2;margin:0 0 12px;letter-spacing:.2px
+}
+.nameGrid{display:grid;grid-template-columns:repeat(7,1fr);gap:14px}
+.nameBtn{
+  min-height:62px;border-radius:20px;background:#fff;color:#213047;border:2px solid #c8d5e3;
+  box-shadow:var(--shadow);font-size:19px;font-weight:900;padding:10px
+}
+.nameBtn.active{
+  color:#fff;background:linear-gradient(135deg,#255be8 0%,#8e27cf 100%);
+  border-color:#164bc8;box-shadow:0 5px 0 #15508f
+}
+.nameBtn.out{opacity:.45}
+.quickBar{
+  display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;
+  background:#fff;border:2px solid var(--line);border-radius:22px;padding:12px 14px;
+  box-shadow:0 6px 16px rgba(33,48,71,.08)
+}
+.tip{color:#8a5a25;background:#fff5df;border:1px solid #efd9a8;border-radius:999px;font-weight:900;font-size:13px;padding:8px 13px}
+/* PK页面 */
+.battleScreen{
+  display:none;min-height:100vh;background:linear-gradient(180deg,#f6f8fc,#e9eef5);
+}
+.battleScreen.show{display:block}
+.battleTop{
+  position:sticky;top:0;z-index:20;
+  display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;
+  padding:12px 16px;background:rgba(255,255,255,.92);backdrop-filter:blur(10px);
+  border-bottom:2px solid var(--line);box-shadow:0 6px 18px rgba(33,48,71,.09)
+}
+.battleTitle{display:flex;align-items:center;gap:10px;font-weight:900;font-size:22px;color:#1d52e2}
+.battleBtns{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.battleStats{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:12px 16px
+}
+.stat{
+  background:#fff;border:2px solid var(--line);border-radius:18px;padding:10px;text-align:center;
+  box-shadow:0 5px 12px rgba(33,48,71,.08)
+}
+.stat b{font-size:26px;display:block}.stat span{font-size:12px;color:var(--muted);font-weight:800}
+.battleGrid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(235px,1fr));
+  gap:14px;padding:0 16px 18px
+}
+.card{
+  border:2px solid var(--line);border-radius:24px;overflow:hidden;background:#fff;
+  box-shadow:0 7px 0 rgba(139,154,174,.35)
+}
+.card.out{opacity:.55;filter:saturate(.55)}
+.cardName{
+  padding:12px;font-size:20px;font-weight:900;
+  display:flex;justify-content:space-between;align-items:center;gap:8px;
+  background:linear-gradient(180deg,#fff,#f7faff)
+}
+.cardName span:first-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.count{
+  font-size:14px;border-radius:999px;padding:5px 8px;background:#edf5ff;border:1px solid #d2e4f8;flex:0 0 auto
+}
+.monsterBox{
+  height:190px;margin:0 12px 10px;border-radius:22px;position:relative;overflow:hidden;
+  background:linear-gradient(180deg,#fff2df,#ffe2bf)
+}
+.monster{
+  position:absolute;width:162px;height:150px;left:50%;top:18px;transform:translateX(-50%);
+  background:var(--c);border-radius:46% 46% 40% 40%;
+  border:5px solid rgba(33,48,71,.13);
+  box-shadow:inset 0 -13px 0 rgba(0,0,0,.08),0 8px 16px rgba(33,48,71,.13)
+}
+.horn{position:absolute;top:-13px;width:34px;height:34px;background:#ffe06f;border-radius:8px 22px 8px 22px;border:3px solid rgba(33,48,71,.12)}
+.horn.l{left:31px;transform:rotate(-22deg)}.horn.r{right:31px;transform:rotate(22deg)}
+.eye{position:absolute;top:44px;width:31px;height:31px;background:#fff;border-radius:50%}
+.eye.l{left:41px}.eye.r{right:41px}
+.eye:after{content:"";position:absolute;width:11px;height:11px;left:10px;top:10px;background:#213047;border-radius:50%}
+.mouth{
+  position:absolute;left:50%;bottom:24px;transform:translateX(-50%);
+  width:122px;min-height:58px;background:#37221e;border-radius:19px 19px 30px 30px;
+  display:flex;flex-wrap:wrap;gap:3px;justify-content:center;align-content:flex-start;padding:6px 8px
+}
+.tooth{width:19px;height:24px;background:#fff;border-radius:2px 2px 10px 10px;border:1px solid rgba(0,0,0,.08);box-shadow:inset 0 -3px 0 rgba(0,0,0,.06)}
+.tooth.gone{visibility:hidden}
+.sleep{
+  display:none;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) rotate(-5deg);
+  background:rgba(33,48,71,.9);color:#fff;font-size:21px;font-weight:900;padding:8px 14px;border-radius:15px
+}
+.card.out .sleep{display:block}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 12px 12px}
+.smallBtn{
+  border-radius:14px;padding:11px 4px;font-size:14px;font-weight:900;
+  background:#fff;border:2px solid var(--line);color:var(--ink)
+}
+.smallBtn.hit{background:#fff0f0;color:#c64040;border-color:#ffcfcf}
+.smallBtn.fix{background:#effff1;color:#267b37;border-color:#cff1d2}
+.empty{
+  padding:52px 12px;text-align:center;border:2px dashed #cbd6e3;border-radius:20px;
+  background:#f8fbff;color:var(--muted);font-weight:900;margin:16px
+}
+.winnerModal{
+  display:none;position:fixed;inset:0;background:rgba(33,48,71,.28);
+  z-index:50;align-items:center;justify-content:center;padding:20px
+}
+.winnerModal.show{display:flex}
+.winnerBox{
+  width:min(460px,92vw);background:#fff;border-radius:30px;text-align:center;
+  padding:28px;box-shadow:0 30px 80px rgba(0,0,0,.25)
+}
+.winnerEmoji{font-size:72px}.winnerName{font-size:38px;font-weight:900;margin:8px 0;color:#1d52e2}
+.winnerText{font-size:15px;color:var(--muted);margin-bottom:16px}
+.closeBtn{border-radius:18px;padding:12px 22px;background:linear-gradient(135deg,var(--blue),var(--purple));color:#fff;font-weight:900}
+.hide{display:none!important}
+@media(max-width:1100px){.nameGrid{grid-template-columns:repeat(5,1fr)}}
+@media(max-width:780px){
+  .header{flex-direction:column;align-items:flex-start}.nameGrid{grid-template-columns:repeat(2,1fr)}
+  .battleStats{grid-template-columns:repeat(2,1fr)}.battleGrid{grid-template-columns:repeat(auto-fit,minmax(190px,1fr))}
+}
+</style>
+</head>
+<body>
+<div id="selectScreen" class="app">
+  <div class="header">
+    <div class="title">
+      <div class="logo">🦷</div>
+      <div>
+        <h1>Monster Teeth Battle</h1>
+        <div class="sub">先选择本轮PK小朋友，再进入全屏PK页面</div>
+      </div>
+    </div>
+    <div class="topBtns">
+      <button class="btn main" onclick="startBattle()">开始PK / 全屏</button>
+      <button class="btn blue" onclick="addKid()">＋ 加娃</button>
+      <button class="btn" onclick="selectAll()">全选</button>
+      <button class="btn" onclick="selectNone()">清空选择</button>
+      <button class="btn red" onclick="resetNames()">恢复默认名单</button>
+    </div>
+  </div>
+  <section class="selectPanel">
+    <div id="selectedLine" class="selectedLine">已选择 0 人：</div>
+    <div id="nameGrid" class="nameGrid"></div>
+  </section>
+  <section class="quickBar">
+    <div class="tip">像侦探游戏一样：先点人 → 再进入单独PK界面 → 投屏/全屏更清楚</div>
+    <button class="btn main" onclick="startBattle()">进入PK页面</button>
+  </section>
+</div>
+
+<div id="battleScreen" class="battleScreen">
+  <div class="battleTop">
+    <div class="battleTitle">🦷 Monster Teeth Battle｜PK中</div>
+    <div class="battleBtns">
+      <button class="btn blue" onclick="randomWinner()">随机赢家</button>
+      <button class="btn green" onclick="restoreSelected()">本轮满牙</button>
+      <button class="btn" onclick="goFullscreen()">全屏</button>
+      <button class="btn" onclick="backSelect()">返回选人</button>
+    </div>
+  </div>
+  <div class="battleStats">
+    <div class="stat"><b id="statSelected">0</b><span>本轮PK</span></div>
+    <div class="stat"><b id="statAlive">0</b><span>还活着</span></div>
+    <div class="stat"><b id="statOut">0</b><span>没牙了</span></div>
+    <div class="stat"><b id="statTeeth">0</b><span>剩余牙齿</span></div>
+  </div>
+  <div id="battleGrid" class="battleGrid"></div>
+  <div id="battleEmpty" class="empty">还没有选择本轮PK的小朋友，请返回选人。</div>
+</div>
+
+<div id="winnerModal" class="winnerModal" onclick="closeWinner()">
+  <div class="winnerBox" onclick="event.stopPropagation()">
+    <div class="winnerEmoji">🎉</div>
+    <div id="winnerName" class="winnerName">Winner</div>
+    <div class="winnerText">可以选择一个怪兽，打掉一颗牙！</div>
+    <button class="closeBtn" onclick="closeWinner()">OK</button>
+  </div>
+</div>
+
+<script>
+const defaultNames=["Rocket","Cassie","Rachel","Bobo","Hannah","Cici","Joe","Leon","Sylvia","Gorman","Ryan","Aaron","Annie","Yuki","Linna","Helen","Ken","Charlie","Via","Eva","Zoey"];
+const colors=["#82d8ff","#95e27a","#ffb3c7","#c8a6ff","#ffd166","#80ed99","#ff9f7a","#a0c4ff","#f4a261","#b8f2e6","#ffcad4","#caffbf"];
+let students=[];
+function makeStudent(name,i,active=false){return {id:Math.random().toString(36).slice(2,9),name,active,max:10,teeth:10,color:colors[i%colors.length]}}
+function load(){
+  try{students=JSON.parse(localStorage.getItem("monsterTeethBattle_fullscreen_v1")||"[]")}catch(e){students=[]}
+  if(!students.length){students=defaultNames.map((n,i)=>makeStudent(n,i,i<8))}
+}
+function save(){localStorage.setItem("monsterTeethBattle_fullscreen_v1",JSON.stringify(students))}
+function addKid(){
+  const name=prompt("输入新小朋友名字：");
+  if(!name||!name.trim())return;
+  const clean=name.trim();
+  if(students.some(s=>s.name.toLowerCase()===clean.toLowerCase())){alert("这个名字已经有啦");return}
+  students.push(makeStudent(clean,students.length,true));
+  render();
+}
+function resetNames(){
+  if(confirm("恢复默认名单会清空当前牙齿状态，确定吗？")){
+    students=defaultNames.map((n,i)=>makeStudent(n,i,i<8));
+    render();
+  }
+}
+function toggle(id){const s=students.find(x=>x.id===id);if(!s)return;s.active=!s.active;render()}
+function selectAll(){students.forEach(s=>s.active=true);render()}
+function selectNone(){students.forEach(s=>s.active=false);render()}
+function startBattle(){
+  const active=students.filter(s=>s.active);
+  if(!active.length){alert("先点选本轮参加PK的小朋友");return}
+  document.getElementById("selectScreen").classList.add("hide");
+  document.getElementById("battleScreen").classList.add("show");
+  renderBattle();
+  goFullscreen();
+}
+function backSelect(){
+  document.getElementById("battleScreen").classList.remove("show");
+  document.getElementById("selectScreen").classList.remove("hide");
+  if(document.fullscreenElement){document.exitFullscreen().catch(()=>{})}
+  render();
+}
+function goFullscreen(){
+  const el=document.getElementById("battleScreen");
+  if(el.requestFullscreen && !document.fullscreenElement){el.requestFullscreen().catch(()=>{})}
+}
+function hit(id){const s=students.find(x=>x.id===id);if(!s)return;s.teeth=Math.max(0,s.teeth-1);renderBattle();render()}
+function fix(id){const s=students.find(x=>x.id===id);if(!s)return;s.teeth=Math.min(s.max,s.teeth+1);renderBattle();render()}
+function full(id){const s=students.find(x=>x.id===id);if(!s)return;s.teeth=s.max;renderBattle();render()}
+function restoreSelected(){students.filter(s=>s.active).forEach(s=>s.teeth=s.max);renderBattle();render()}
+function randomWinner(){
+  const active=students.filter(s=>s.active);
+  if(!active.length){alert("先点选本轮参加PK的小朋友");return}
+  const alive=active.filter(s=>s.teeth>0);
+  const pool=alive.length?alive:active;
+  const w=pool[Math.floor(Math.random()*pool.length)];
+  document.getElementById("winnerName").textContent=w.name;
+  document.getElementById("winnerModal").classList.add("show");
+}
+function closeWinner(){document.getElementById("winnerModal").classList.remove("show")}
+function render(){
+  const active=students.filter(s=>s.active);
+  document.getElementById("selectedLine").textContent=`已选择 ${active.length} 人：${active.map(s=>s.name).join("、")}`;
+  document.getElementById("nameGrid").innerHTML=students.map(s=>`
+    <button class="nameBtn ${s.active?'active':''} ${s.teeth===0?'out':''}" onclick="toggle('${s.id}')">${esc(s.name)}</button>
+  `).join("");
+  save();
+}
+function renderBattle(){
+  const active=students.filter(s=>s.active);
+  document.getElementById("statSelected").textContent=active.length;
+  document.getElementById("statAlive").textContent=active.filter(s=>s.teeth>0).length;
+  document.getElementById("statOut").textContent=active.filter(s=>s.teeth===0).length;
+  document.getElementById("statTeeth").textContent=active.reduce((a,b)=>a+b.teeth,0);
+  document.getElementById("battleEmpty").style.display=active.length?"none":"block";
+  document.getElementById("battleGrid").innerHTML=active.map(card).join("");
+  save();
+}
+function card(s){
+  const teeth=Array.from({length:s.max},(_,i)=>`<div class="tooth ${i>=s.teeth?'gone':''}"></div>`).join("");
+  return `<div class="card ${s.teeth===0?'out':''}">
+    <div class="cardName"><span>${esc(s.name)}</span><span class="count">🦷 ${s.teeth}/${s.max}</span></div>
+    <div class="monsterBox">
+      <div class="monster" style="--c:${s.color}">
+        <div class="horn l"></div><div class="horn r"></div>
+        <div class="eye l"></div><div class="eye r"></div>
+        <div class="mouth">${teeth}</div>
+      </div>
+      <div class="sleep">没牙了</div>
+    </div>
+    <div class="actions">
+      <button class="smallBtn hit" onclick="hit('${s.id}')">打掉一颗牙</button>
+      <button class="smallBtn fix" onclick="fix('${s.id}')">补一颗牙</button>
+      <button class="smallBtn" onclick="full('${s.id}')">满牙</button>
+      <button class="smallBtn" onclick="toggle('${s.id}');renderBattle()">退出本轮</button>
+    </div>
+  </div>`;
+}
+function esc(str){return String(str).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[m]))}
+load();render();
+</script>
+</body>
+</html>
