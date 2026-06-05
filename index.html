@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Monster Teeth Battle｜选人进入PK全屏版</title>
+<title>Monster Teeth Battle｜大屏PK版</title>
 <style>
 :root{
   --bg:#eef2f7;--card:#fff;--ink:#213047;--muted:#6d7b8d;--line:#cbd6e3;
@@ -11,6 +11,7 @@
   --red:#ef5350;--green:#42b66b;--shadow:0 5px 0 rgba(139,154,174,.45);
 }
 *{box-sizing:border-box}
+html,body{min-height:100%}
 body{
   margin:0;font-family:Arial,"Microsoft YaHei",sans-serif;color:var(--ink);
   background:linear-gradient(180deg,#f5f7fb,#e9eef5);
@@ -63,79 +64,93 @@ h1{font-size:25px;margin:0}.sub{font-size:13px;color:var(--muted);margin-top:4px
   box-shadow:0 6px 16px rgba(33,48,71,.08)
 }
 .tip{color:#8a5a25;background:#fff5df;border:1px solid #efd9a8;border-radius:999px;font-weight:900;font-size:13px;padding:8px 13px}
-/* PK页面 */
+
+/* PK 大屏页面 */
 .battleScreen{
   display:none;min-height:100vh;background:linear-gradient(180deg,#f6f8fc,#e9eef5);
 }
 .battleScreen.show{display:block}
 .battleTop{
-  position:sticky;top:0;z-index:20;
   display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;
-  padding:12px 16px;background:rgba(255,255,255,.92);backdrop-filter:blur(10px);
-  border-bottom:2px solid var(--line);box-shadow:0 6px 18px rgba(33,48,71,.09)
+  padding:12px 16px;background:#fff;border-bottom:2px solid var(--line);
+  box-shadow:0 6px 18px rgba(33,48,71,.09)
 }
-.battleTitle{display:flex;align-items:center;gap:10px;font-weight:900;font-size:22px;color:#1d52e2}
+.battleTitle{display:flex;align-items:center;gap:10px;font-weight:900;font-size:23px;color:#1d52e2}
 .battleBtns{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
 .battleStats{
-  display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:12px 16px
+  display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:10px 16px
 }
 .stat{
-  background:#fff;border:2px solid var(--line);border-radius:18px;padding:10px;text-align:center;
+  background:#fff;border:2px solid var(--line);border-radius:18px;padding:8px;text-align:center;
   box-shadow:0 5px 12px rgba(33,48,71,.08)
 }
-.stat b{font-size:26px;display:block}.stat span{font-size:12px;color:var(--muted);font-weight:800}
+.stat b{font-size:25px;display:block}.stat span{font-size:12px;color:var(--muted);font-weight:800}
 .battleGrid{
-  display:grid;grid-template-columns:repeat(auto-fit,minmax(235px,1fr));
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(310px,1fr));
   gap:14px;padding:0 16px 18px
 }
+.battleGrid.few{grid-template-columns:repeat(auto-fit,minmax(430px,1fr))}
+.battleGrid.one{grid-template-columns:minmax(520px,900px);justify-content:center}
 .card{
   border:2px solid var(--line);border-radius:24px;overflow:hidden;background:#fff;
   box-shadow:0 7px 0 rgba(139,154,174,.35)
 }
 .card.out{opacity:.55;filter:saturate(.55)}
 .cardName{
-  padding:12px;font-size:20px;font-weight:900;
+  padding:12px 14px;font-size:22px;font-weight:900;
   display:flex;justify-content:space-between;align-items:center;gap:8px;
   background:linear-gradient(180deg,#fff,#f7faff)
 }
 .cardName span:first-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .count{
-  font-size:14px;border-radius:999px;padding:5px 8px;background:#edf5ff;border:1px solid #d2e4f8;flex:0 0 auto
+  font-size:15px;border-radius:999px;padding:6px 10px;background:#edf5ff;border:1px solid #d2e4f8;flex:0 0 auto
 }
 .monsterBox{
-  height:190px;margin:0 12px 10px;border-radius:22px;position:relative;overflow:hidden;
+  height:250px;margin:0 12px 10px;border-radius:22px;position:relative;overflow:hidden;
   background:linear-gradient(180deg,#fff2df,#ffe2bf)
 }
 .monster{
-  position:absolute;width:162px;height:150px;left:50%;top:18px;transform:translateX(-50%);
+  position:absolute;width:218px;height:202px;left:50%;top:24px;transform:translateX(-50%);
   background:var(--c);border-radius:46% 46% 40% 40%;
-  border:5px solid rgba(33,48,71,.13);
-  box-shadow:inset 0 -13px 0 rgba(0,0,0,.08),0 8px 16px rgba(33,48,71,.13)
+  border:7px solid rgba(33,48,71,.13);
+  box-shadow:inset 0 -18px 0 rgba(0,0,0,.08),0 12px 24px rgba(33,48,71,.13)
 }
-.horn{position:absolute;top:-13px;width:34px;height:34px;background:#ffe06f;border-radius:8px 22px 8px 22px;border:3px solid rgba(33,48,71,.12)}
-.horn.l{left:31px;transform:rotate(-22deg)}.horn.r{right:31px;transform:rotate(22deg)}
-.eye{position:absolute;top:44px;width:31px;height:31px;background:#fff;border-radius:50%}
-.eye.l{left:41px}.eye.r{right:41px}
-.eye:after{content:"";position:absolute;width:11px;height:11px;left:10px;top:10px;background:#213047;border-radius:50%}
+.horn{position:absolute;top:-18px;width:48px;height:48px;background:#ffe06f;border-radius:11px 31px 11px 31px;border:4px solid rgba(33,48,71,.12)}
+.horn.l{left:39px;transform:rotate(-22deg)}.horn.r{right:39px;transform:rotate(22deg)}
+.eye{position:absolute;top:60px;width:43px;height:43px;background:#fff;border-radius:50%}
+.eye.l{left:55px}.eye.r{right:55px}
+.eye:after{content:"";position:absolute;width:16px;height:16px;left:14px;top:14px;background:#213047;border-radius:50%}
 .mouth{
-  position:absolute;left:50%;bottom:24px;transform:translateX(-50%);
-  width:122px;min-height:58px;background:#37221e;border-radius:19px 19px 30px 30px;
-  display:flex;flex-wrap:wrap;gap:3px;justify-content:center;align-content:flex-start;padding:6px 8px
+  position:absolute;left:50%;bottom:32px;transform:translateX(-50%);
+  width:165px;min-height:78px;background:#37221e;border-radius:26px 26px 42px 42px;
+  display:flex;flex-wrap:wrap;gap:5px;justify-content:center;align-content:flex-start;padding:8px 12px
 }
-.tooth{width:19px;height:24px;background:#fff;border-radius:2px 2px 10px 10px;border:1px solid rgba(0,0,0,.08);box-shadow:inset 0 -3px 0 rgba(0,0,0,.06)}
+.tooth{width:25px;height:33px;background:#fff;border-radius:4px 4px 13px 13px;border:1px solid rgba(0,0,0,.08);box-shadow:inset 0 -4px 0 rgba(0,0,0,.06)}
 .tooth.gone{visibility:hidden}
 .sleep{
   display:none;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) rotate(-5deg);
-  background:rgba(33,48,71,.9);color:#fff;font-size:21px;font-weight:900;padding:8px 14px;border-radius:15px
+  background:rgba(33,48,71,.9);color:#fff;font-size:24px;font-weight:900;padding:10px 18px;border-radius:18px
 }
 .card.out .sleep{display:block}
-.actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 12px 12px}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;padding:0 12px 12px}
 .smallBtn{
-  border-radius:14px;padding:11px 4px;font-size:14px;font-weight:900;
+  border-radius:14px;padding:12px 4px;font-size:15px;font-weight:900;
   background:#fff;border:2px solid var(--line);color:var(--ink)
 }
 .smallBtn.hit{background:#fff0f0;color:#c64040;border-color:#ffcfcf}
 .smallBtn.fix{background:#effff1;color:#267b37;border-color:#cff1d2}
+.battleGrid.few .monsterBox{height:310px}
+.battleGrid.few .monster{width:278px;height:256px;top:30px;border-width:8px}
+.battleGrid.few .horn{width:56px;height:56px;top:-20px}.battleGrid.few .horn.l{left:53px}.battleGrid.few .horn.r{right:53px}
+.battleGrid.few .eye{width:52px;height:52px;top:72px}.battleGrid.few .eye.l{left:73px}.battleGrid.few .eye.r{right:73px}.battleGrid.few .eye:after{width:19px;height:19px;left:17px;top:17px}
+.battleGrid.few .mouth{width:210px;min-height:98px;bottom:38px;gap:6px;padding:10px 15px;border-radius:30px 30px 48px 48px}
+.battleGrid.few .tooth{width:32px;height:41px;border-radius:5px 5px 16px 16px}
+.battleGrid.one .monsterBox{height:430px}
+.battleGrid.one .monster{width:390px;height:360px;top:38px;border-width:10px}
+.battleGrid.one .horn{width:76px;height:76px;top:-27px}.battleGrid.one .horn.l{left:82px}.battleGrid.one .horn.r{right:82px}
+.battleGrid.one .eye{width:70px;height:70px;top:104px}.battleGrid.one .eye.l{left:107px}.battleGrid.one .eye.r{right:107px}.battleGrid.one .eye:after{width:25px;height:25px;left:23px;top:23px}
+.battleGrid.one .mouth{width:296px;min-height:140px;bottom:52px;gap:9px;padding:14px 22px;border-radius:42px 42px 68px 68px}
+.battleGrid.one .tooth{width:45px;height:58px;border-radius:6px 6px 22px 22px}
 .empty{
   padding:52px 12px;text-align:center;border:2px dashed #cbd6e3;border-radius:20px;
   background:#f8fbff;color:var(--muted);font-weight:900;margin:16px
@@ -156,7 +171,10 @@ h1{font-size:25px;margin:0}.sub{font-size:13px;color:var(--muted);margin-top:4px
 @media(max-width:1100px){.nameGrid{grid-template-columns:repeat(5,1fr)}}
 @media(max-width:780px){
   .header{flex-direction:column;align-items:flex-start}.nameGrid{grid-template-columns:repeat(2,1fr)}
-  .battleStats{grid-template-columns:repeat(2,1fr)}.battleGrid{grid-template-columns:repeat(auto-fit,minmax(190px,1fr))}
+  .battleStats{grid-template-columns:repeat(2,1fr)}
+  .battleGrid,.battleGrid.few,.battleGrid.one{grid-template-columns:1fr}
+  .battleGrid.few .monsterBox,.battleGrid.one .monsterBox{height:290px}
+  .battleGrid.few .monster,.battleGrid.one .monster{width:250px;height:230px;top:30px}
 }
 </style>
 </head>
@@ -167,11 +185,11 @@ h1{font-size:25px;margin:0}.sub{font-size:13px;color:var(--muted);margin-top:4px
       <div class="logo">🦷</div>
       <div>
         <h1>Monster Teeth Battle</h1>
-        <div class="sub">先选择本轮PK小朋友，再进入全屏PK页面</div>
+        <div class="sub">先选择本轮PK小朋友，再进入大屏PK页面</div>
       </div>
     </div>
     <div class="topBtns">
-      <button class="btn main" onclick="startBattle()">开始PK / 全屏</button>
+      <button class="btn main" onclick="startBattle()">开始PK</button>
       <button class="btn blue" onclick="addKid()">＋ 加娃</button>
       <button class="btn" onclick="selectAll()">全选</button>
       <button class="btn" onclick="selectNone()">清空选择</button>
@@ -183,7 +201,7 @@ h1{font-size:25px;margin:0}.sub{font-size:13px;color:var(--muted);margin-top:4px
     <div id="nameGrid" class="nameGrid"></div>
   </section>
   <section class="quickBar">
-    <div class="tip">像侦探游戏一样：先点人 → 再进入单独PK界面 → 投屏/全屏更清楚</div>
+    <div class="tip">先点人 → 点击“开始PK” → 进入独立大屏PK界面</div>
     <button class="btn main" onclick="startBattle()">进入PK页面</button>
   </section>
 </div>
@@ -194,7 +212,6 @@ h1{font-size:25px;margin:0}.sub{font-size:13px;color:var(--muted);margin-top:4px
     <div class="battleBtns">
       <button class="btn blue" onclick="randomWinner()">随机赢家</button>
       <button class="btn green" onclick="restoreSelected()">本轮满牙</button>
-      <button class="btn" onclick="goFullscreen()">全屏</button>
       <button class="btn" onclick="backSelect()">返回选人</button>
     </div>
   </div>
@@ -223,10 +240,10 @@ const colors=["#82d8ff","#95e27a","#ffb3c7","#c8a6ff","#ffd166","#80ed99","#ff9f
 let students=[];
 function makeStudent(name,i,active=false){return {id:Math.random().toString(36).slice(2,9),name,active,max:10,teeth:10,color:colors[i%colors.length]}}
 function load(){
-  try{students=JSON.parse(localStorage.getItem("monsterTeethBattle_fullscreen_v1")||"[]")}catch(e){students=[]}
+  try{students=JSON.parse(localStorage.getItem("monsterTeethBattle_bigscreen_v2")||"[]")}catch(e){students=[]}
   if(!students.length){students=defaultNames.map((n,i)=>makeStudent(n,i,i<8))}
 }
-function save(){localStorage.setItem("monsterTeethBattle_fullscreen_v1",JSON.stringify(students))}
+function save(){localStorage.setItem("monsterTeethBattle_bigscreen_v2",JSON.stringify(students))}
 function addKid(){
   const name=prompt("输入新小朋友名字：");
   if(!name||!name.trim())return;
@@ -250,17 +267,11 @@ function startBattle(){
   document.getElementById("selectScreen").classList.add("hide");
   document.getElementById("battleScreen").classList.add("show");
   renderBattle();
-  goFullscreen();
 }
 function backSelect(){
   document.getElementById("battleScreen").classList.remove("show");
   document.getElementById("selectScreen").classList.remove("hide");
-  if(document.fullscreenElement){document.exitFullscreen().catch(()=>{})}
   render();
-}
-function goFullscreen(){
-  const el=document.getElementById("battleScreen");
-  if(el.requestFullscreen && !document.fullscreenElement){el.requestFullscreen().catch(()=>{})}
 }
 function hit(id){const s=students.find(x=>x.id===id);if(!s)return;s.teeth=Math.max(0,s.teeth-1);renderBattle();render()}
 function fix(id){const s=students.find(x=>x.id===id);if(!s)return;s.teeth=Math.min(s.max,s.teeth+1);renderBattle();render()}
@@ -291,7 +302,9 @@ function renderBattle(){
   document.getElementById("statOut").textContent=active.filter(s=>s.teeth===0).length;
   document.getElementById("statTeeth").textContent=active.reduce((a,b)=>a+b.teeth,0);
   document.getElementById("battleEmpty").style.display=active.length?"none":"block";
-  document.getElementById("battleGrid").innerHTML=active.map(card).join("");
+  const grid=document.getElementById("battleGrid");
+  grid.className="battleGrid" + (active.length===1?" one":active.length<=4?" few":"");
+  grid.innerHTML=active.map(card).join("");
   save();
 }
 function card(s){
