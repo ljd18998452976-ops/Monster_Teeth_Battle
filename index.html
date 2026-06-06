@@ -3,331 +3,43 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Monster Teeth Battle｜大屏PK版</title>
+<title>Monster Teeth Battle｜大屏道具PK版</title>
 <style>
-:root{
-  --bg:#eef2f7;--card:#fff;--ink:#213047;--muted:#6d7b8d;--line:#cbd6e3;
-  --blue:#2458e6;--purple:#9827c9;--orange:#ff8a3d;--yellow:#ffc85c;
-  --red:#ef5350;--green:#42b66b;--shadow:0 5px 0 rgba(139,154,174,.45);
-}
-*{box-sizing:border-box}
-html,body{min-height:100%}
-body{
-  margin:0;font-family:Arial,"Microsoft YaHei",sans-serif;color:var(--ink);
-  background:linear-gradient(180deg,#f5f7fb,#e9eef5);
-}
-button,input,select{font:inherit}
-button{border:0;cursor:pointer;transition:.14s transform,.14s filter}
-button:hover{filter:brightness(1.03);transform:translateY(-1px)}
-button:active{transform:translateY(1px)}
-.app{max-width:1500px;margin:0 auto;padding:18px}
-.header{
-  display:flex;justify-content:space-between;align-items:center;gap:12px;
-  background:#fff;border:2px solid var(--line);border-radius:22px;
-  padding:14px 18px;margin-bottom:14px;box-shadow:0 6px 18px rgba(33,48,71,.08)
-}
-.title{display:flex;align-items:center;gap:12px}
-.logo{
-  width:56px;height:56px;border-radius:18px;display:grid;place-items:center;
-  background:linear-gradient(135deg,var(--orange),var(--yellow));font-size:34px
-}
-h1{font-size:25px;margin:0}.sub{font-size:13px;color:var(--muted);margin-top:4px}
-.topBtns{display:flex;gap:9px;flex-wrap:wrap;justify-content:flex-end}
-.btn{
-  border-radius:16px;padding:11px 16px;font-weight:900;
-  background:#fff;border:2px solid var(--line);color:var(--ink);box-shadow:0 4px 0 rgba(139,154,174,.35)
-}
-.btn.main{background:linear-gradient(135deg,var(--blue),var(--purple));color:#fff;border-color:#1c4ad0}
-.btn.red{background:#fff0f0;color:#c64040;border-color:#ffcaca}
-.btn.green{background:#effff3;color:#21733d;border-color:#ccefd5}
-.btn.blue{background:#edf5ff;color:#1e63c7;border-color:#c9def8}
-.selectPanel{
-  background:#eef2f7;border:2px solid var(--line);border-radius:24px;
-  padding:16px;margin-bottom:14px
-}
-.selectedLine{
-  font-size:21px;font-weight:900;color:#1d52e2;margin:0 0 12px;letter-spacing:.2px
-}
-.nameGrid{display:grid;grid-template-columns:repeat(7,1fr);gap:14px}
-.nameBtn{
-  min-height:62px;border-radius:20px;background:#fff;color:#213047;border:2px solid #c8d5e3;
-  box-shadow:var(--shadow);font-size:19px;font-weight:900;padding:10px
-}
-.nameBtn.active{
-  color:#fff;background:linear-gradient(135deg,#255be8 0%,#8e27cf 100%);
-  border-color:#164bc8;box-shadow:0 5px 0 #15508f
-}
-.nameBtn.out{opacity:.45}
-.quickBar{
-  display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;
-  background:#fff;border:2px solid var(--line);border-radius:22px;padding:12px 14px;
-  box-shadow:0 6px 16px rgba(33,48,71,.08)
-}
-.tip{color:#8a5a25;background:#fff5df;border:1px solid #efd9a8;border-radius:999px;font-weight:900;font-size:13px;padding:8px 13px}
-
-/* PK 大屏页面 */
-.battleScreen{
-  display:none;min-height:100vh;background:linear-gradient(180deg,#f6f8fc,#e9eef5);
-}
-.battleScreen.show{display:block}
-.battleTop{
-  display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;
-  padding:12px 16px;background:#fff;border-bottom:2px solid var(--line);
-  box-shadow:0 6px 18px rgba(33,48,71,.09)
-}
-.battleTitle{display:flex;align-items:center;gap:10px;font-weight:900;font-size:23px;color:#1d52e2}
-.battleBtns{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
-.battleStats{
-  display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:10px 16px
-}
-.stat{
-  background:#fff;border:2px solid var(--line);border-radius:18px;padding:8px;text-align:center;
-  box-shadow:0 5px 12px rgba(33,48,71,.08)
-}
-.stat b{font-size:25px;display:block}.stat span{font-size:12px;color:var(--muted);font-weight:800}
-.battleGrid{
-  display:grid;grid-template-columns:repeat(auto-fit,minmax(310px,1fr));
-  gap:14px;padding:0 16px 18px
-}
-.battleGrid.few{grid-template-columns:repeat(auto-fit,minmax(430px,1fr))}
-.battleGrid.one{grid-template-columns:minmax(520px,900px);justify-content:center}
-.card{
-  border:2px solid var(--line);border-radius:24px;overflow:hidden;background:#fff;
-  box-shadow:0 7px 0 rgba(139,154,174,.35)
-}
-.card.out{opacity:.55;filter:saturate(.55)}
-.cardName{
-  padding:12px 14px;font-size:22px;font-weight:900;
-  display:flex;justify-content:space-between;align-items:center;gap:8px;
-  background:linear-gradient(180deg,#fff,#f7faff)
-}
-.cardName span:first-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.count{
-  font-size:15px;border-radius:999px;padding:6px 10px;background:#edf5ff;border:1px solid #d2e4f8;flex:0 0 auto
-}
-.monsterBox{
-  height:250px;margin:0 12px 10px;border-radius:22px;position:relative;overflow:hidden;
-  background:linear-gradient(180deg,#fff2df,#ffe2bf)
-}
-.monster{
-  position:absolute;width:218px;height:202px;left:50%;top:24px;transform:translateX(-50%);
-  background:var(--c);border-radius:46% 46% 40% 40%;
-  border:7px solid rgba(33,48,71,.13);
-  box-shadow:inset 0 -18px 0 rgba(0,0,0,.08),0 12px 24px rgba(33,48,71,.13)
-}
-.horn{position:absolute;top:-18px;width:48px;height:48px;background:#ffe06f;border-radius:11px 31px 11px 31px;border:4px solid rgba(33,48,71,.12)}
-.horn.l{left:39px;transform:rotate(-22deg)}.horn.r{right:39px;transform:rotate(22deg)}
-.eye{position:absolute;top:60px;width:43px;height:43px;background:#fff;border-radius:50%}
-.eye.l{left:55px}.eye.r{right:55px}
-.eye:after{content:"";position:absolute;width:16px;height:16px;left:14px;top:14px;background:#213047;border-radius:50%}
-.mouth{
-  position:absolute;left:50%;bottom:32px;transform:translateX(-50%);
-  width:165px;min-height:78px;background:#37221e;border-radius:26px 26px 42px 42px;
-  display:flex;flex-wrap:wrap;gap:5px;justify-content:center;align-content:flex-start;padding:8px 12px
-}
-.tooth{width:25px;height:33px;background:#fff;border-radius:4px 4px 13px 13px;border:1px solid rgba(0,0,0,.08);box-shadow:inset 0 -4px 0 rgba(0,0,0,.06)}
-.tooth.gone{visibility:hidden}
-.sleep{
-  display:none;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) rotate(-5deg);
-  background:rgba(33,48,71,.9);color:#fff;font-size:24px;font-weight:900;padding:10px 18px;border-radius:18px
-}
-.card.out .sleep{display:block}
-.actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;padding:0 12px 12px}
-.smallBtn{
-  border-radius:14px;padding:12px 4px;font-size:15px;font-weight:900;
-  background:#fff;border:2px solid var(--line);color:var(--ink)
-}
-.smallBtn.hit{background:#fff0f0;color:#c64040;border-color:#ffcfcf}
-.smallBtn.fix{background:#effff1;color:#267b37;border-color:#cff1d2}
-.battleGrid.few .monsterBox{height:310px}
-.battleGrid.few .monster{width:278px;height:256px;top:30px;border-width:8px}
-.battleGrid.few .horn{width:56px;height:56px;top:-20px}.battleGrid.few .horn.l{left:53px}.battleGrid.few .horn.r{right:53px}
-.battleGrid.few .eye{width:52px;height:52px;top:72px}.battleGrid.few .eye.l{left:73px}.battleGrid.few .eye.r{right:73px}.battleGrid.few .eye:after{width:19px;height:19px;left:17px;top:17px}
-.battleGrid.few .mouth{width:210px;min-height:98px;bottom:38px;gap:6px;padding:10px 15px;border-radius:30px 30px 48px 48px}
-.battleGrid.few .tooth{width:32px;height:41px;border-radius:5px 5px 16px 16px}
-.battleGrid.one .monsterBox{height:430px}
-.battleGrid.one .monster{width:390px;height:360px;top:38px;border-width:10px}
-.battleGrid.one .horn{width:76px;height:76px;top:-27px}.battleGrid.one .horn.l{left:82px}.battleGrid.one .horn.r{right:82px}
-.battleGrid.one .eye{width:70px;height:70px;top:104px}.battleGrid.one .eye.l{left:107px}.battleGrid.one .eye.r{right:107px}.battleGrid.one .eye:after{width:25px;height:25px;left:23px;top:23px}
-.battleGrid.one .mouth{width:296px;min-height:140px;bottom:52px;gap:9px;padding:14px 22px;border-radius:42px 42px 68px 68px}
-.battleGrid.one .tooth{width:45px;height:58px;border-radius:6px 6px 22px 22px}
-.empty{
-  padding:52px 12px;text-align:center;border:2px dashed #cbd6e3;border-radius:20px;
-  background:#f8fbff;color:var(--muted);font-weight:900;margin:16px
-}
-.winnerModal{
-  display:none;position:fixed;inset:0;background:rgba(33,48,71,.28);
-  z-index:50;align-items:center;justify-content:center;padding:20px
-}
-.winnerModal.show{display:flex}
-.winnerBox{
-  width:min(460px,92vw);background:#fff;border-radius:30px;text-align:center;
-  padding:28px;box-shadow:0 30px 80px rgba(0,0,0,.25)
-}
-.winnerEmoji{font-size:72px}.winnerName{font-size:38px;font-weight:900;margin:8px 0;color:#1d52e2}
-.winnerText{font-size:15px;color:var(--muted);margin-bottom:16px}
-.closeBtn{border-radius:18px;padding:12px 22px;background:linear-gradient(135deg,var(--blue),var(--purple));color:#fff;font-weight:900}
-.hide{display:none!important}
-@media(max-width:1100px){.nameGrid{grid-template-columns:repeat(5,1fr)}}
-@media(max-width:780px){
-  .header{flex-direction:column;align-items:flex-start}.nameGrid{grid-template-columns:repeat(2,1fr)}
-  .battleStats{grid-template-columns:repeat(2,1fr)}
-  .battleGrid,.battleGrid.few,.battleGrid.one{grid-template-columns:1fr}
-  .battleGrid.few .monsterBox,.battleGrid.one .monsterBox{height:290px}
-  .battleGrid.few .monster,.battleGrid.one .monster{width:250px;height:230px;top:30px}
-}
+:root{--ink:#213047;--muted:#6d7b8d;--line:#cbd6e3;--blue:#2458e6;--purple:#9827c9;--orange:#ff8a3d;--yellow:#ffc85c;--red:#ef5350;--green:#42b66b;--shadow:0 5px 0 rgba(139,154,174,.45)}
+*{box-sizing:border-box}html,body{min-height:100%}body{margin:0;font-family:Arial,"Microsoft YaHei",sans-serif;color:var(--ink);background:linear-gradient(180deg,#f5f7fb,#e9eef5)}button,input,select{font:inherit}button{border:0;cursor:pointer;transition:.14s transform,.14s filter}button:hover{filter:brightness(1.03);transform:translateY(-1px)}button:active{transform:translateY(1px)}.app{max-width:1500px;margin:0 auto;padding:18px}.header{display:flex;justify-content:space-between;align-items:center;gap:12px;background:#fff;border:2px solid var(--line);border-radius:22px;padding:14px 18px;margin-bottom:14px;box-shadow:0 6px 18px rgba(33,48,71,.08)}.title{display:flex;align-items:center;gap:12px}.logo{width:56px;height:56px;border-radius:18px;display:grid;place-items:center;background:linear-gradient(135deg,var(--orange),var(--yellow));font-size:34px}h1{font-size:25px;margin:0}.sub{font-size:13px;color:var(--muted);margin-top:4px}.topBtns{display:flex;gap:9px;flex-wrap:wrap;justify-content:flex-end}.btn{border-radius:16px;padding:11px 16px;font-weight:900;background:#fff;border:2px solid var(--line);color:var(--ink);box-shadow:0 4px 0 rgba(139,154,174,.35)}.btn.main{background:linear-gradient(135deg,var(--blue),var(--purple));color:#fff;border-color:#1c4ad0}.btn.red{background:#fff0f0;color:#c64040;border-color:#ffcaca}.btn.green{background:#effff3;color:#21733d;border-color:#ccefd5}.btn.blue{background:#edf5ff;color:#1e63c7;border-color:#c9def8}.selectPanel{background:#eef2f7;border:2px solid var(--line);border-radius:24px;padding:16px;margin-bottom:14px}.selectedLine{font-size:21px;font-weight:900;color:#1d52e2;margin:0 0 12px;letter-spacing:.2px}.nameGrid{display:grid;grid-template-columns:repeat(7,1fr);gap:14px}.nameBtn{min-height:62px;border-radius:20px;background:#fff;color:#213047;border:2px solid #c8d5e3;box-shadow:var(--shadow);font-size:19px;font-weight:900;padding:10px}.nameBtn.active{color:#fff;background:linear-gradient(135deg,#255be8 0%,#8e27cf 100%);border-color:#164bc8;box-shadow:0 5px 0 #15508f}.nameBtn.out{opacity:.45}.quickBar{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;background:#fff;border:2px solid var(--line);border-radius:22px;padding:12px 14px;box-shadow:0 6px 16px rgba(33,48,71,.08)}.tip{color:#8a5a25;background:#fff5df;border:1px solid #efd9a8;border-radius:999px;font-weight:900;font-size:13px;padding:8px 13px}.battleScreen{display:none;min-height:100vh;background:linear-gradient(180deg,#f6f8fc,#e9eef5)}.battleScreen.show{display:block}.battleTop{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:12px 16px;background:#fff;border-bottom:2px solid var(--line);box-shadow:0 6px 18px rgba(33,48,71,.09)}.battleTitle{display:flex;align-items:center;gap:10px;font-weight:900;font-size:23px;color:#1d52e2}.battleBtns{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}.controlPanel{margin:10px 16px 10px;background:#fff;border:2px solid var(--line);border-radius:22px;padding:12px;box-shadow:0 6px 16px rgba(33,48,71,.08)}.controlGrid{display:grid;grid-template-columns:1.1fr 1.1fr repeat(4,auto);gap:9px;align-items:end}.field label{display:block;font-size:12px;color:var(--muted);font-weight:900;margin:0 0 5px 4px}select{width:100%;border:2px solid var(--line);border-radius:15px;padding:10px;background:#f8fbff;color:var(--ink);font-weight:900;outline:none}.tinyBtn{border-radius:14px;padding:10px 12px;font-weight:900;background:#fff;border:2px solid var(--line);color:var(--ink);box-shadow:0 3px 0 rgba(139,154,174,.35);white-space:nowrap}.tinyBtn.red{background:#fff0f0;color:#c64040;border-color:#ffcfcf}.tinyBtn.green{background:#effff1;color:#267b37;border-color:#cff1d2}.tinyBtn.blue{background:#edf5ff;color:#1e63c7;border-color:#c9def8}.tinyBtn.gold{background:#fff8df;color:#8d5a18;border-color:#efd9a8}.tinyBtn.purple{background:#f4eeff;color:#6732c5;border-color:#dfd1ff}.rewardRow{display:flex;gap:8px;flex-wrap:wrap;margin-top:9px;align-items:center}.switchLine{display:flex;gap:8px;align-items:center;font-size:13px;color:#47566c;font-weight:900;margin-left:auto}.switchLine input{width:18px;height:18px}.battleStats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:0 16px 10px}.stat{background:#fff;border:2px solid var(--line);border-radius:18px;padding:8px;text-align:center;box-shadow:0 5px 12px rgba(33,48,71,.08)}.stat b{font-size:25px;display:block}.stat span{font-size:12px;color:var(--muted);font-weight:800}.battleGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(310px,1fr));gap:14px;padding:0 16px 18px}.battleGrid.few{grid-template-columns:repeat(auto-fit,minmax(430px,1fr))}.battleGrid.one{grid-template-columns:minmax(520px,900px);justify-content:center}.card{border:2px solid var(--line);border-radius:24px;overflow:hidden;background:#fff;box-shadow:0 7px 0 rgba(139,154,174,.35)}.card.out{opacity:.58;filter:saturate(.6)}.card.focus{outline:5px solid rgba(36,88,230,.28)}.cardName{padding:12px 14px;font-size:22px;font-weight:900;display:flex;justify-content:space-between;align-items:center;gap:8px;background:linear-gradient(180deg,#fff,#f7faff)}.cardName span:first-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.count{font-size:15px;border-radius:999px;padding:6px 10px;background:#edf5ff;border:1px solid #d2e4f8;flex:0 0 auto}.inv{display:flex;gap:6px;flex-wrap:wrap;padding:0 12px 10px}.badge{font-size:13px;font-weight:900;padding:5px 8px;border-radius:999px;background:#fff8df;border:1px solid #efd9a8;color:#8d5a18}.badge.blue{background:#edf5ff;border-color:#c9def8;color:#1e63c7}.badge.green{background:#effff3;border-color:#ccefd5;color:#21733d}.badge.purple{background:#f4eeff;border-color:#dfd1ff;color:#6732c5}.badge.red{background:#fff0f0;border-color:#ffcaca;color:#c64040}.monsterBox{height:250px;margin:0 12px 10px;border-radius:22px;position:relative;overflow:hidden;background:linear-gradient(180deg,#fff2df,#ffe2bf)}.monster{position:absolute;width:218px;height:202px;left:50%;top:24px;transform:translateX(-50%);background:var(--c);border-radius:46% 46% 40% 40%;border:7px solid rgba(33,48,71,.13);box-shadow:inset 0 -18px 0 rgba(0,0,0,.08),0 12px 24px rgba(33,48,71,.13)}.horn{position:absolute;top:-18px;width:48px;height:48px;background:#ffe06f;border-radius:11px 31px 11px 31px;border:4px solid rgba(33,48,71,.12)}.horn.l{left:39px;transform:rotate(-22deg)}.horn.r{right:39px;transform:rotate(22deg)}.eye{position:absolute;top:60px;width:43px;height:43px;background:#fff;border-radius:50%}.eye.l{left:55px}.eye.r{right:55px}.eye:after{content:"";position:absolute;width:16px;height:16px;left:14px;top:14px;background:#213047;border-radius:50%}.mouth{position:absolute;left:50%;bottom:32px;transform:translateX(-50%);width:165px;min-height:78px;background:#37221e;border-radius:26px 26px 42px 42px;display:flex;flex-wrap:wrap;gap:5px;justify-content:center;align-content:flex-start;padding:8px 12px}.tooth{width:25px;height:33px;background:#fff;border-radius:4px 4px 13px 13px;border:1px solid rgba(0,0,0,.08);box-shadow:inset 0 -4px 0 rgba(0,0,0,.06);padding:0}.tooth.gone{visibility:hidden}.sleep{display:none;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) rotate(-5deg);background:rgba(33,48,71,.9);color:#fff;font-size:24px;font-weight:900;padding:10px 18px;border-radius:18px}.card.out .sleep{display:block}.actions{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;padding:0 12px 12px}.smallBtn{border-radius:14px;padding:11px 4px;font-size:14px;font-weight:900;background:#fff;border:2px solid var(--line);color:var(--ink)}.smallBtn.hit{background:#fff0f0;color:#c64040;border-color:#ffcfcf}.smallBtn.fix{background:#effff1;color:#267b37;border-color:#cff1d2}.smallBtn.blue{background:#edf5ff;color:#1e63c7;border-color:#c9def8}.battleGrid.few .monsterBox{height:310px}.battleGrid.few .monster{width:278px;height:256px;top:30px;border-width:8px}.battleGrid.few .horn{width:56px;height:56px;top:-20px}.battleGrid.few .horn.l{left:53px}.battleGrid.few .horn.r{right:53px}.battleGrid.few .eye{width:52px;height:52px;top:72px}.battleGrid.few .eye.l{left:73px}.battleGrid.few .eye.r{right:73px}.battleGrid.few .eye:after{width:19px;height:19px;left:17px;top:17px}.battleGrid.few .mouth{width:210px;min-height:98px;bottom:38px;gap:6px;padding:10px 15px;border-radius:30px 30px 48px 48px}.battleGrid.few .tooth{width:32px;height:41px;border-radius:5px 5px 16px 16px}.battleGrid.one .monsterBox{height:430px}.battleGrid.one .monster{width:390px;height:360px;top:38px;border-width:10px}.battleGrid.one .horn{width:76px;height:76px;top:-27px}.battleGrid.one .horn.l{left:82px}.battleGrid.one .horn.r{right:82px}.battleGrid.one .eye{width:70px;height:70px;top:104px}.battleGrid.one .eye.l{left:107px}.battleGrid.one .eye.r{right:107px}.battleGrid.one .eye:after{width:25px;height:25px;left:23px;top:23px}.battleGrid.one .mouth{width:296px;min-height:140px;bottom:52px;gap:9px;padding:14px 22px;border-radius:42px 42px 68px 68px}.battleGrid.one .tooth{width:45px;height:58px;border-radius:6px 6px 22px 22px}.logBox{position:fixed;right:14px;bottom:14px;width:min(360px,80vw);max-height:160px;overflow:auto;background:rgba(255,255,255,.94);border:2px solid var(--line);border-radius:18px;padding:8px;box-shadow:0 8px 24px rgba(33,48,71,.15);font-size:12px;z-index:15}.logItem{padding:5px 7px;border-bottom:1px dashed #d8e1ec;color:#46576d}.logItem:last-child{border-bottom:0}.empty{padding:52px 12px;text-align:center;border:2px dashed #cbd6e3;border-radius:20px;background:#f8fbff;color:var(--muted);font-weight:900;margin:16px}.winnerModal{display:none;position:fixed;inset:0;background:rgba(33,48,71,.28);z-index:50;align-items:center;justify-content:center;padding:20px}.winnerModal.show{display:flex}.winnerBox{width:min(460px,92vw);background:#fff;border-radius:30px;text-align:center;padding:28px;box-shadow:0 30px 80px rgba(0,0,0,.25)}.winnerEmoji{font-size:72px}.winnerName{font-size:38px;font-weight:900;margin:8px 0;color:#1d52e2}.winnerText{font-size:15px;color:var(--muted);margin-bottom:16px}.closeBtn{border-radius:18px;padding:12px 22px;background:linear-gradient(135deg,var(--blue),var(--purple));color:#fff;font-weight:900}.hide{display:none!important}
+@media(max-width:1100px){.nameGrid{grid-template-columns:repeat(5,1fr)}.controlGrid{grid-template-columns:1fr 1fr}.rewardRow{align-items:flex-start}.switchLine{margin-left:0}}@media(max-width:780px){.header{flex-direction:column;align-items:flex-start}.nameGrid{grid-template-columns:repeat(2,1fr)}.battleStats{grid-template-columns:repeat(2,1fr)}.battleGrid,.battleGrid.few,.battleGrid.one{grid-template-columns:1fr}.battleGrid.few .monsterBox,.battleGrid.one .monsterBox{height:290px}.battleGrid.few .monster,.battleGrid.one .monster{width:250px;height:230px;top:30px}}@media print{body{background:#fff}.app,.battleTop,.controlPanel,.battleStats,.actions,.logBox,.winnerModal{display:none!important}.battleScreen{display:block!important;background:#fff}.battleGrid,.battleGrid.few,.battleGrid.one{display:grid;grid-template-columns:repeat(2,1fr)!important;gap:10px;padding:0}.card{box-shadow:none;break-inside:avoid}.monsterBox{height:230px!important}.monster{width:200px!important;height:185px!important;top:22px!important}}
 </style>
 </head>
 <body>
-<div id="selectScreen" class="app">
-  <div class="header">
-    <div class="title">
-      <div class="logo">🦷</div>
-      <div>
-        <h1>Monster Teeth Battle</h1>
-        <div class="sub">先选择本轮PK小朋友，再进入大屏PK页面</div>
-      </div>
-    </div>
-    <div class="topBtns">
-      <button class="btn main" onclick="startBattle()">开始PK</button>
-      <button class="btn blue" onclick="addKid()">＋ 加娃</button>
-      <button class="btn" onclick="selectAll()">全选</button>
-      <button class="btn" onclick="selectNone()">清空选择</button>
-      <button class="btn red" onclick="resetNames()">恢复默认名单</button>
-    </div>
-  </div>
-  <section class="selectPanel">
-    <div id="selectedLine" class="selectedLine">已选择 0 人：</div>
-    <div id="nameGrid" class="nameGrid"></div>
-  </section>
-  <section class="quickBar">
-    <div class="tip">先点人 → 点击“开始PK” → 进入独立大屏PK界面</div>
-    <button class="btn main" onclick="startBattle()">进入PK页面</button>
-  </section>
-</div>
-
-<div id="battleScreen" class="battleScreen">
-  <div class="battleTop">
-    <div class="battleTitle">🦷 Monster Teeth Battle｜PK中</div>
-    <div class="battleBtns">
-      <button class="btn blue" onclick="randomWinner()">随机赢家</button>
-      <button class="btn green" onclick="restoreSelected()">本轮满牙</button>
-      <button class="btn" onclick="backSelect()">返回选人</button>
-    </div>
-  </div>
-  <div class="battleStats">
-    <div class="stat"><b id="statSelected">0</b><span>本轮PK</span></div>
-    <div class="stat"><b id="statAlive">0</b><span>还活着</span></div>
-    <div class="stat"><b id="statOut">0</b><span>没牙了</span></div>
-    <div class="stat"><b id="statTeeth">0</b><span>剩余牙齿</span></div>
-  </div>
-  <div id="battleGrid" class="battleGrid"></div>
-  <div id="battleEmpty" class="empty">还没有选择本轮PK的小朋友，请返回选人。</div>
-</div>
-
-<div id="winnerModal" class="winnerModal" onclick="closeWinner()">
-  <div class="winnerBox" onclick="event.stopPropagation()">
-    <div class="winnerEmoji">🎉</div>
-    <div id="winnerName" class="winnerName">Winner</div>
-    <div class="winnerText">可以选择一个怪兽，打掉一颗牙！</div>
-    <button class="closeBtn" onclick="closeWinner()">OK</button>
-  </div>
-</div>
-
+<div id="selectScreen" class="app"><div class="header"><div class="title"><div class="logo">🦷</div><div><h1>Monster Teeth Battle</h1><div class="sub">先选择本轮PK小朋友，再进入大屏道具PK页面</div></div></div><div class="topBtns"><button class="btn main" onclick="startBattle()">开始PK</button><button class="btn blue" onclick="addKid()">＋ 加娃</button><button class="btn" onclick="selectAll()">全选</button><button class="btn" onclick="selectNone()">清空选择</button><button class="btn red" onclick="resetNames()">恢复默认名单</button></div></div><section class="selectPanel"><div id="selectedLine" class="selectedLine">已选择 0 人：</div><div id="nameGrid" class="nameGrid"></div></section><section class="quickBar"><div class="tip">点选孩子 → 开始PK → 在PK页选择答题人和目标，使用奖励 / 攻击 / 复活</div><button class="btn main" onclick="startBattle()">进入PK页面</button></section></div>
+<div id="battleScreen" class="battleScreen"><div class="battleTop"><div class="battleTitle">🦷 Monster Teeth Battle｜道具PK中</div><div class="battleBtns"><button class="btn blue" onclick="randomWinner()">随机答题人</button><button class="btn blue" onclick="randomTarget()">随机攻击目标</button><button class="btn green" onclick="restoreSelected()">本轮满牙</button><button class="btn" onclick="window.print()">打印怪兽卡</button><button class="btn" onclick="backSelect()">返回选人</button></div></div><div class="controlPanel"><div class="controlGrid"><div class="field"><label>答题人 / 赢家</label><select id="winnerSelect" onchange="setFocus()"></select></div><div class="field"><label>攻击目标</label><select id="targetSelect" onchange="setFocus()"></select></div><button class="tinyBtn gold" onclick="reward('hammer')">+ 锤子</button><button class="tinyBtn blue" onclick="reward('shield')">+ 盾牌</button><button class="tinyBtn green" onclick="reward('potion')">+ 药水</button><button class="tinyBtn purple" onclick="reward('trap')">+ 陷阱</button></div><div class="rewardRow"><button class="tinyBtn red" onclick="attackSelected(1)">打 1 颗牙</button><button class="tinyBtn red" onclick="attackSelected(2)">打 2 颗牙</button><button class="tinyBtn gold" onclick="useHammer()">使用锤子攻击</button><button class="tinyBtn green" onclick="reviveCurrent()">复活当前答题人 +3 牙</button><button class="tinyBtn green" onclick="usePotionCurrent()">当前答题人用药水 +1 牙</button><label class="switchLine"><input id="antiFocus" type="checkbox" checked> 防集火</label><label class="switchLine"><input id="autoShield" type="checkbox" checked> 盾牌抵消</label><label class="switchLine"><input id="trapBounce" type="checkbox" checked> 陷阱反弹</label></div></div><div class="battleStats"><div class="stat"><b id="statSelected">0</b><span>本轮PK</span></div><div class="stat"><b id="statAlive">0</b><span>还活着</span></div><div class="stat"><b id="statOut">0</b><span>Sleep Mode</span></div><div class="stat"><b id="statTeeth">0</b><span>剩余牙齿</span></div></div><div id="battleGrid" class="battleGrid"></div><div id="battleEmpty" class="empty">还没有选择本轮PK的小朋友，请返回选人。</div><div id="logBox" class="logBox"></div></div>
+<div id="winnerModal" class="winnerModal" onclick="closeWinner()"><div class="winnerBox" onclick="event.stopPropagation()"><div class="winnerEmoji">🎉</div><div id="winnerName" class="winnerName">Winner</div><div class="winnerText">可以选择一个怪兽，打掉一颗牙或获得道具！</div><button class="closeBtn" onclick="closeWinner()">OK</button></div></div>
 <script>
 const defaultNames=["Rocket","Cassie","Rachel","Bobo","Hannah","Cici","Joe","Leon","Sylvia","Gorman","Ryan","Aaron","Annie","Yuki","Linna","Helen","Ken","Charlie","Via","Eva","Zoey"];
 const colors=["#82d8ff","#95e27a","#ffb3c7","#c8a6ff","#ffd166","#80ed99","#ff9f7a","#a0c4ff","#f4a261","#b8f2e6","#ffcad4","#caffbf"];
-let students=[];
-function makeStudent(name,i,active=false){return {id:Math.random().toString(36).slice(2,9),name,active,max:10,teeth:10,color:colors[i%colors.length]}}
-function load(){
-  try{students=JSON.parse(localStorage.getItem("monsterTeethBattle_bigscreen_v2")||"[]")}catch(e){students=[]}
-  if(!students.length){students=defaultNames.map((n,i)=>makeStudent(n,i,i<8))}
-}
-function save(){localStorage.setItem("monsterTeethBattle_bigscreen_v2",JSON.stringify(students))}
-function addKid(){
-  const name=prompt("输入新小朋友名字：");
-  if(!name||!name.trim())return;
-  const clean=name.trim();
-  if(students.some(s=>s.name.toLowerCase()===clean.toLowerCase())){alert("这个名字已经有啦");return}
-  students.push(makeStudent(clean,students.length,true));
-  render();
-}
-function resetNames(){
-  if(confirm("恢复默认名单会清空当前牙齿状态，确定吗？")){
-    students=defaultNames.map((n,i)=>makeStudent(n,i,i<8));
-    render();
-  }
-}
-function toggle(id){const s=students.find(x=>x.id===id);if(!s)return;s.active=!s.active;render()}
-function selectAll(){students.forEach(s=>s.active=true);render()}
-function selectNone(){students.forEach(s=>s.active=false);render()}
-function startBattle(){
-  const active=students.filter(s=>s.active);
-  if(!active.length){alert("先点选本轮参加PK的小朋友");return}
-  document.getElementById("selectScreen").classList.add("hide");
-  document.getElementById("battleScreen").classList.add("show");
-  renderBattle();
-}
-function backSelect(){
-  document.getElementById("battleScreen").classList.remove("show");
-  document.getElementById("selectScreen").classList.remove("hide");
-  render();
-}
-function hit(id){const s=students.find(x=>x.id===id);if(!s)return;s.teeth=Math.max(0,s.teeth-1);renderBattle();render()}
-function fix(id){const s=students.find(x=>x.id===id);if(!s)return;s.teeth=Math.min(s.max,s.teeth+1);renderBattle();render()}
-function full(id){const s=students.find(x=>x.id===id);if(!s)return;s.teeth=s.max;renderBattle();render()}
-function restoreSelected(){students.filter(s=>s.active).forEach(s=>s.teeth=s.max);renderBattle();render()}
-function randomWinner(){
-  const active=students.filter(s=>s.active);
-  if(!active.length){alert("先点选本轮参加PK的小朋友");return}
-  const alive=active.filter(s=>s.teeth>0);
-  const pool=alive.length?alive:active;
-  const w=pool[Math.floor(Math.random()*pool.length)];
-  document.getElementById("winnerName").textContent=w.name;
-  document.getElementById("winnerModal").classList.add("show");
-}
-function closeWinner(){document.getElementById("winnerModal").classList.remove("show")}
-function render(){
-  const active=students.filter(s=>s.active);
-  document.getElementById("selectedLine").textContent=`已选择 ${active.length} 人：${active.map(s=>s.name).join("、")}`;
-  document.getElementById("nameGrid").innerHTML=students.map(s=>`
-    <button class="nameBtn ${s.active?'active':''} ${s.teeth===0?'out':''}" onclick="toggle('${s.id}')">${esc(s.name)}</button>
-  `).join("");
-  save();
-}
-function renderBattle(){
-  const active=students.filter(s=>s.active);
-  document.getElementById("statSelected").textContent=active.length;
-  document.getElementById("statAlive").textContent=active.filter(s=>s.teeth>0).length;
-  document.getElementById("statOut").textContent=active.filter(s=>s.teeth===0).length;
-  document.getElementById("statTeeth").textContent=active.reduce((a,b)=>a+b.teeth,0);
-  document.getElementById("battleEmpty").style.display=active.length?"none":"block";
-  const grid=document.getElementById("battleGrid");
-  grid.className="battleGrid" + (active.length===1?" one":active.length<=4?" few":"");
-  grid.innerHTML=active.map(card).join("");
-  save();
-}
-function card(s){
-  const teeth=Array.from({length:s.max},(_,i)=>`<div class="tooth ${i>=s.teeth?'gone':''}"></div>`).join("");
-  return `<div class="card ${s.teeth===0?'out':''}">
-    <div class="cardName"><span>${esc(s.name)}</span><span class="count">🦷 ${s.teeth}/${s.max}</span></div>
-    <div class="monsterBox">
-      <div class="monster" style="--c:${s.color}">
-        <div class="horn l"></div><div class="horn r"></div>
-        <div class="eye l"></div><div class="eye r"></div>
-        <div class="mouth">${teeth}</div>
-      </div>
-      <div class="sleep">没牙了</div>
-    </div>
-    <div class="actions">
-      <button class="smallBtn hit" onclick="hit('${s.id}')">打掉一颗牙</button>
-      <button class="smallBtn fix" onclick="fix('${s.id}')">补一颗牙</button>
-      <button class="smallBtn" onclick="full('${s.id}')">满牙</button>
-      <button class="smallBtn" onclick="toggle('${s.id}');renderBattle()">退出本轮</button>
-    </div>
-  </div>`;
-}
-function esc(str){return String(str).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[m]))}
+let students=[],logs=[],lastTargetId=null;
+function makeStudent(name,i,active=false){return {id:Math.random().toString(36).slice(2,9),name,active,max:10,teeth:10,color:colors[i%colors.length],hammer:0,shield:0,potion:0,trap:0}}
+function load(){try{const d=JSON.parse(localStorage.getItem("monsterTeethBattle_props_v1")||"{}");students=d.students||[];logs=d.logs||[];lastTargetId=d.lastTargetId||null}catch(e){students=[]}if(!students.length){students=defaultNames.map((n,i)=>makeStudent(n,i,i<8));logs=["已载入默认名单，可直接点选PK。"]}}
+function save(){localStorage.setItem("monsterTeethBattle_props_v1",JSON.stringify({students,logs,lastTargetId}))}function activeStudents(){return students.filter(s=>s.active)}function alive(s){return s.teeth>0}function addLog(t){logs.unshift(t);logs=logs.slice(0,50);renderLog();save()}
+function addKid(){const name=prompt("输入新小朋友名字：");if(!name||!name.trim())return;const clean=name.trim();if(students.some(s=>s.name.toLowerCase()===clean.toLowerCase())){alert("这个名字已经有啦");return}students.push(makeStudent(clean,students.length,true));render()}
+function resetNames(){if(confirm("恢复默认名单会清空当前PK状态和道具，确定吗？")){students=defaultNames.map((n,i)=>makeStudent(n,i,i<8));logs=[];lastTargetId=null;render()}}
+function toggle(id){const s=students.find(x=>x.id===id);if(!s)return;s.active=!s.active;render();renderBattle()}function selectAll(){students.forEach(s=>s.active=true);render()}function selectNone(){students.forEach(s=>s.active=false);render()}
+function startBattle(){if(!activeStudents().length){alert("先点选本轮参加PK的小朋友");return}document.getElementById("selectScreen").classList.add("hide");document.getElementById("battleScreen").classList.add("show");renderBattle()}function backSelect(){document.getElementById("battleScreen").classList.remove("show");document.getElementById("selectScreen").classList.remove("hide");render()}
+function getWinner(){const id=document.getElementById("winnerSelect").value;const p=students.find(s=>s.id===id);if(!p)alert("先选择答题人");return p}function getTarget(){const id=document.getElementById("targetSelect").value;const p=students.find(s=>s.id===id);if(!p)alert("先选择攻击目标");return p}function setFocus(){renderBattle()}
+function reward(type){const p=getWinner();if(!p)return;p[type]=(p[type]||0)+1;addLog(`${p.name} 获得 ${label(type)} +1`);renderBattle();render()}function label(t){return {hammer:"锤子",shield:"盾牌",potion:"药水",trap:"陷阱"}[t]||t}
+function attackSelected(dmg){const a=getWinner(),t=getTarget();if(!a||!t)return;attack(a,t,dmg)}
+function attack(a,t,dmg){if(a.id===t.id){alert("不能攻击自己的怪兽");return}if(!alive(a)){alert(`${a.name} 在 Sleep Mode，先复活再攻击`);return}if(!alive(t)){alert(`${t.name} 已经 Sleep Mode，换一个目标吧`);return}if(document.getElementById("antiFocus").checked&&lastTargetId===t.id){alert("防集火：不能连续攻击同一个目标");return}let text=`${a.name} 攻击 ${t.name}`;if(document.getElementById("trapBounce").checked&&t.trap>0){t.trap--;a.teeth=Math.max(0,a.teeth-1);lastTargetId=t.id;addLog(`${text}，${t.name} 使用陷阱反弹，${a.name} 掉 1 颗牙`);renderBattle();render();return}if(document.getElementById("autoShield").checked&&t.shield>0){t.shield--;lastTargetId=t.id;addLog(`${text}，${t.name} 的盾牌抵消攻击`);renderBattle();render();return}const before=t.teeth;t.teeth=Math.max(0,t.teeth-dmg);lastTargetId=t.id;addLog(`${text}，打掉 ${before-t.teeth} 颗牙${t.teeth===0?"，进入 Sleep Mode":""}`);renderBattle();render()}
+function useHammer(){const a=getWinner(),t=getTarget();if(!a||!t)return;if(a.hammer<=0){alert(`${a.name} 没有锤子`);return}a.hammer--;attack(a,t,1)}
+function reviveCurrent(){const p=getWinner();if(!p)return;p.teeth=Math.min(p.max,p.teeth+3);addLog(`${p.name} 复活/恢复 3 颗牙`);renderBattle();render()}function usePotionCurrent(){const p=getWinner();if(!p)return;if(p.potion<=0){alert(`${p.name} 没有药水`);return}p.potion--;p.teeth=Math.min(p.max,p.teeth+1);addLog(`${p.name} 使用药水，补 1 颗牙`);renderBattle();render()}
+function hit(id){const s=students.find(x=>x.id===id);if(!s)return;s.teeth=Math.max(0,s.teeth-1);addLog(`${s.name} 手动打掉 1 颗牙`);renderBattle();render()}function fix(id){const s=students.find(x=>x.id===id);if(!s)return;s.teeth=Math.min(s.max,s.teeth+1);addLog(`${s.name} 手动补 1 颗牙`);renderBattle();render()}function full(id){const s=students.find(x=>x.id===id);if(!s)return;s.teeth=s.max;addLog(`${s.name} 恢复满牙`);renderBattle();render()}function revive(id){const s=students.find(x=>x.id===id);if(!s)return;s.teeth=Math.min(s.max,s.teeth+3);addLog(`${s.name} 复活/恢复 3 颗牙`);renderBattle();render()}
+function toggleTooth(id,index){const s=students.find(x=>x.id===id);if(!s)return;s.teeth=index<s.teeth?index:index+1;addLog(`${s.name} 手动调整牙齿为 ${s.teeth}/${s.max}`);renderBattle();render()}
+function randomWinner(){const a=activeStudents();if(!a.length){alert("先点选本轮参加PK的小朋友");return}const pool=a.filter(alive).length?a.filter(alive):a;const w=pool[Math.floor(Math.random()*pool.length)];document.getElementById("winnerSelect").value=w.id;document.getElementById("winnerName").textContent=w.name;document.getElementById("winnerModal").classList.add("show");renderBattle()}function randomTarget(){const w=document.getElementById("winnerSelect").value;let pool=activeStudents().filter(s=>s.id!==w&&alive(s));if(document.getElementById("antiFocus").checked)pool=pool.filter(s=>s.id!==lastTargetId);if(!pool.length){alert("没有可攻击目标");return}const t=pool[Math.floor(Math.random()*pool.length)];document.getElementById("targetSelect").value=t.id;renderBattle()}function closeWinner(){document.getElementById("winnerModal").classList.remove("show")}
+function restoreSelected(){activeStudents().forEach(s=>s.teeth=s.max);addLog("本轮PK怪兽全部恢复满牙");renderBattle();render()}
+function render(){const active=activeStudents();document.getElementById("selectedLine").textContent=`已选择 ${active.length} 人：${active.map(s=>s.name).join("、")}`;document.getElementById("nameGrid").innerHTML=students.map(s=>`<button class="nameBtn ${s.active?'active':''} ${s.teeth===0?'out':''}" onclick="toggle('${s.id}')">${esc(s.name)}</button>`).join("");save()}
+function renderSelects(){const a=activeStudents(),w=document.getElementById("winnerSelect"),t=document.getElementById("targetSelect"),oldW=w.value,oldT=t.value;w.innerHTML=a.map(s=>`<option value="${s.id}">${esc(s.name)}${s.teeth===0?"（Sleep）":""}</option>`).join("");t.innerHTML=a.map(s=>`<option value="${s.id}">${esc(s.name)}${s.teeth===0?"（Sleep）":""}</option>`).join("");if(a.some(s=>s.id===oldW))w.value=oldW;if(a.some(s=>s.id===oldT))t.value=oldT;if(!w.value&&a[0])w.value=a[0].id;if(!t.value&&a[1])t.value=a[1].id}
+function renderBattle(){renderSelects();const a=activeStudents();document.getElementById("statSelected").textContent=a.length;document.getElementById("statAlive").textContent=a.filter(alive).length;document.getElementById("statOut").textContent=a.filter(s=>s.teeth===0).length;document.getElementById("statTeeth").textContent=a.reduce((x,y)=>x+y.teeth,0);document.getElementById("battleEmpty").style.display=a.length?"none":"block";const grid=document.getElementById("battleGrid");grid.className="battleGrid"+(a.length===1?" one":a.length<=4?" few":"");grid.innerHTML=a.map(card).join("");renderLog();save()}
+function card(s){const w=document.getElementById("winnerSelect")?.value,t=document.getElementById("targetSelect")?.value;const teeth=Array.from({length:s.max},(_,i)=>`<button class="tooth ${i>=s.teeth?'gone':''}" onclick="toggleTooth('${s.id}',${i})" title="点击牙齿可手动消失/恢复"></button>`).join("");return `<div class="card ${s.teeth===0?'out':''} ${s.id===w||s.id===t?'focus':''}"><div class="cardName"><span>${esc(s.name)}</span><span class="count">🦷 ${s.teeth}/${s.max}</span></div><div class="inv"><span class="badge">🔨 ${s.hammer||0}</span><span class="badge blue">🛡 ${s.shield||0}</span><span class="badge green">🧪 ${s.potion||0}</span><span class="badge purple">🪤 ${s.trap||0}</span></div><div class="monsterBox"><div class="monster" style="--c:${s.color}"><div class="horn l"></div><div class="horn r"></div><div class="eye l"></div><div class="eye r"></div><div class="mouth">${teeth}</div></div><div class="sleep">Sleep Mode</div></div><div class="actions"><button class="smallBtn hit" onclick="hit('${s.id}')">打掉一颗牙</button><button class="smallBtn fix" onclick="fix('${s.id}')">补一颗牙</button><button class="smallBtn blue" onclick="revive('${s.id}')">复活 +3</button><button class="smallBtn" onclick="full('${s.id}')">满牙</button><button class="smallBtn" onclick="document.getElementById('winnerSelect').value='${s.id}';renderBattle()">设答题人</button><button class="smallBtn" onclick="document.getElementById('targetSelect').value='${s.id}';renderBattle()">设目标</button></div></div>`}
+function renderLog(){document.getElementById("logBox").innerHTML=(logs.length?logs:["暂无记录"]).map(x=>`<div class="logItem">${esc(x)}</div>`).join("")}function esc(str){return String(str).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[m]))}
 load();render();
 </script>
 </body>
